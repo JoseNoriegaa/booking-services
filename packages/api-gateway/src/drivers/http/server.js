@@ -2,6 +2,7 @@
 const Fastify = require('fastify');
 const Autoload = require('fastify-autoload');
 const Swagger = require('fastify-swagger');
+const FastifyCors = require('@fastify/cors');
 const path = require('path');
 
 // Internal dependencies
@@ -59,6 +60,15 @@ if (!isTestEnv) {
   fastify.register(Swagger, swaggerOptions);
 }
 
+fastify.register(FastifyCors, {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  credentials: true,
+  maxAge: 86400,
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+});
 fastify.register(Autoload, { dir: path.join(__dirname, 'routes') });
 fastify.register(Autoload, { dir: path.join(__dirname, 'plugins') });
 

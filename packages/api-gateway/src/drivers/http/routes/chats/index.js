@@ -15,6 +15,14 @@ function chatRouter(fastify, _options, done) {
     handler: messageAdapters.listChatMessages,
   });
 
+  fastify.post('/', {
+    handler: (request, reply) => {
+      fastify.io.emit('message', 'something');
+
+      reply.send('ok');
+    },
+  });
+
   done();
 }
 
